@@ -55,8 +55,12 @@ def generate_chart(req: ChartRequest):
         # Fallback for ocean/polar coordinates
         tz = "UTC"
 
-    chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
-    return chart_data
+    try:
+        chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
+        return chart_data
+    except Exception as e:
+        import traceback
+        return Response(content=traceback.format_exc(), status_code=500)
 
 
 @app.post("/api/chart/pdf")
