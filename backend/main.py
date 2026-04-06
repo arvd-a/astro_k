@@ -73,13 +73,22 @@ def generate_chart_pdf_endpoint(req: ChartRequest):
     if tz is None:
         tz = "UTC"
 
-    chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
-    pdf_bytes = generate_chart_pdf(chart_data)
+    try:
+        chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
+        pdf_bytes = generate_chart_pdf(chart_data)
 
-    return Response(
-        content=pdf_bytes,
-        media_type="application/pdf",
-        headers={
-            "Content-Disposition": 'attachment; filename="astro_k_chart.pdf"',
-        },
-    )
+        # PyFPDF2 pdf.output() usually returns a bytearray or bytes.
+        import builtins
+        if not isinstance(pdf_bytes, (bytes, bytearray)):
+            pdf_bytes = bytes(pdf_bytes)
+
+        return Response(
+            content=pdf_bytes,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": 'attachment; filename="astro_k_chart.pdf"',
+            },
+        )
+    except Exception as e:
+        import traceback
+        return Response(content=traceback.format_exc(), status_code=500)
