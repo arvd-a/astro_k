@@ -24,10 +24,7 @@ app = FastAPI(
 # CORS — allow frontend origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",       # Local dev
-        "https://astro-k.vercel.app",  # Production (update after deploy)
-    ],
+    allow_origins=["*"], # Allow all origins, so any Vercel domain works!
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
