@@ -162,7 +162,8 @@ def compute_chart(date_str: str, time_str: str, lat: float, lon: float, tz: str)
     planets = []
 
     for p in PLANETS:
-        result, ret_flags = swe.calc_ut(jd, p["swe_id"], calc_flags)
+        ret = swe.calc_ut(jd, p["swe_id"], calc_flags)
+        result = ret[0]
         # result: (longitude, latitude, distance, speed_in_longitude, ...)
         degree = result[0] % 360
         speed = result[3]
