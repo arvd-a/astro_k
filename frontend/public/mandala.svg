@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <!-- Definitions for resuable elements -->
+  <defs>
+    <!-- Soft glow filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <style>
+    .line-thin { stroke: #4ADE80; stroke-width: 1; fill: none; opacity: 0.5; }
+    .line-med { stroke: #FBBF24; stroke-width: 2; fill: none; opacity: 0.4; }
+    .line-thick { stroke: #4ADE80; stroke-width: 3; fill: none; opacity: 0.7; }
+    .glow-layer { filter: url(#glow); }
+  </style>
+
+  <!-- Group centered at (500,500) -->
+  <g transform="translate(500, 500)">
+    
+    <!-- Outer boundary circles -->
+    <circle cx="0" cy="0" r="480" class="line-thin" />
+    <circle cx="0" cy="0" r="460" class="line-med" />
+    <circle cx="0" cy="0" r="455" class="line-thin" />
+
+    <!-- 16-petal lotus abstraction using intersecting circles/arcs -->
+    <g class="line-thin">
+      <circle cx="0" cy="-350" r="110" />
+      <circle cx="0" cy="350" r="110" />
+      <circle cx="-350" cy="0" r="110" />
+      <circle cx="350" cy="0" r="110" />
+      <circle cx="-247" cy="-247" r="110" />
+      <circle cx="247" cy="247" r="110" />
+      <circle cx="247" cy="-247" r="110" />
+      <circle cx="-247" cy="247" r="110" />
+    </g>
+
+    <!-- 8-petal inner structure -->
+    <circle cx="0" cy="0" r="240" class="line-med glow-layer" />
+    
+    <!-- Inner Yantra architecture - Rotated Squares -->
+    <g class="glow-layer">
+      <!-- Square 1 -->
+      <rect x="-170" y="-170" width="340" height="340" class="line-thick" />
+      <!-- Square 2 (rotated 45) -->
+      <rect x="-170" y="-170" width="340" height="340" transform="rotate(45)" class="line-thick" />
+    </g>
+
+    <circle cx="0" cy="0" r="170" class="line-thin" />
+
+    <!-- Inner crossing triangles (up and down) -->
+    <polygon points="0,-120 104,60 -104,60" class="line-med" />
+    <polygon points="0,120 -104,-60 104,-60" class="line-med" />
+    
+    <polygon points="0,-90 78,45 -78,45" class="line-thin" transform="rotate(30)" />
+    <polygon points="0,90 -78,-45 78,-45" class="line-thin" transform="rotate(30)" />
+    
+    <polygon points="0,-90 78,45 -78,45" class="line-thin" transform="rotate(-30)" />
+    <polygon points="0,90 -78,-45 78,-45" class="line-thin" transform="rotate(-30)" />
+
+    <!-- Core / Bindu -->
+    <circle cx="0" cy="0" r="50" class="line-thick glow-layer" />
+    <circle cx="0" cy="0" r="40" class="line-thin" />
+    <circle cx="0" cy="0" r="5" fill="#FBBF24" opacity="0.8" class="glow-layer"/>
+
+    <!-- Radiating connection lines -->
+    <line x1="0" y1="-460" x2="0" y2="-480" class="line-med" />
+    <line x1="0" y1="460" x2="0" y2="480" class="line-med" />
+    <line x1="-460" y1="0" x2="-480" y2="0" class="line-med" />
+    <line x1="460" y1="0" x2="480" y2="0" class="line-med" />
+    
+    <line x1="-325" y1="-325" x2="-340" y2="-340" class="line-med" />
+    <line x1="325" y1="325" x2="340" y2="340" class="line-med" />
+    <line x1="-325" y1="325" x2="-340" y2="340" class="line-med" />
+    <line x1="325" y1="-325" x2="340" y2="-340" class="line-med" />
+
+  </g>
+</svg>
