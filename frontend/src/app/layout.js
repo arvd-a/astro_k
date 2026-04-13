@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import CosmicBackground from '@/components/CosmicBackground';
+import CursorTrail from '@/components/CursorTrail';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={inter.variable}>
       <body>
         <CosmicBackground />
+        <CursorTrail />
         {/* Main layout container above the fixed background */}
         <main style={{ position: 'relative', zIndex: 10 }}>
           {children}
