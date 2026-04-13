@@ -7,6 +7,7 @@ import NorthIndianChart from '@/components/NorthIndianChart';
 import ChartControls from '@/components/ChartControls';
 import { fetchChart, fetchChartPdf } from '@/lib/api';
 import { calculateAspects } from '@/lib/aspects';
+import AstrologerChat from '@/components/AstrologerChat';
 
 // Define the reference test fixture for development testing
 const REFERENCE_FIXTURE = {
@@ -172,6 +173,9 @@ export default function Home() {
           </GlassPanel>
         </div>
       </div>
+
+      {/* AI Astrologer Chat — appears after chart generation */}
+      {chartData && <AstrologerChat chartData={chartData} />}
     </div>
   );
 }

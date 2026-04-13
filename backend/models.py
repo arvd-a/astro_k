@@ -61,3 +61,19 @@ class ChartResponse(BaseModel):
     ascendant: AscendantData
     planets: List[PlanetData]
     houses: List[HouseData]
+
+
+# ---------------------------------------------------------------------------
+# Chat Models (Groq-powered astrologer)
+# ---------------------------------------------------------------------------
+
+class ChatMessage(BaseModel):
+    role: str = Field(..., description="'user' or 'assistant'")
+    content: str
+
+class ChatRequest(BaseModel):
+    chart_data: ChartResponse
+    messages: List[ChatMessage] = Field(..., description="Conversation history")
+
+class ChatResponse(BaseModel):
+    reply: str
