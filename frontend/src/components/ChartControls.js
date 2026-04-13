@@ -29,7 +29,7 @@ export default function ChartControls({
 
       {metadata && (
         <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'right' }}>
-          <div>JD: {metadata.julian_day} | {metadata.ayanamsa}</div>
+          <div>JD: {metadata.julian_day} | {metadata.ayanamsa}{metadata.topocentric ? ' | Topocentric' : ''}</div>
           <div>{metadata.user_location.lat.toFixed(4)}°, {metadata.user_location.lon.toFixed(4)}°</div>
         </div>
       )}

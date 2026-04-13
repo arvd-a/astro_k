@@ -16,6 +16,8 @@ class ChartRequest(BaseModel):
     time: str = Field(..., pattern=r"^\d{2}:\d{2}$", description="HH:MM (24h)")
     lat: float = Field(..., ge=-90, le=90, description="Latitude")
     lon: float = Field(..., ge=-180, le=180, description="Longitude")
+    ayanamsa: str = Field("lahiri", description="Ayanamsa system: lahiri, raman, kp, true_chitrapaksha")
+    topocentric: bool = Field(False, description="Use topocentric (surface-level) calculations")
 
 
 class UserLocation(BaseModel):

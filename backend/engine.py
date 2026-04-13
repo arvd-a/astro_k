@@ -41,6 +41,14 @@ PLANETS = [
     # Ketu is derived, not a direct swisseph body
 ]
 
+# Supported Ayanamsa systems
+AYANAMSA_MAP = {
+    "lahiri":          swe.SIDM_LAHIRI,
+    "raman":           swe.SIDM_RAMAN,
+    "kp":              swe.SIDM_KRISHNAMURTI,
+    "true_chitrapaksha": swe.SIDM_TRUE_CITRA,
+}
+
 
 # ---------------------------------------------------------------------------
 # Helper Functions
@@ -96,7 +104,15 @@ def _build_planet_data(degree: float, speed: float, pid: str, name: str, force_r
 # Core Computation
 # ---------------------------------------------------------------------------
 
-def compute_chart(date_str: str, time_str: str, lat: float, lon: float, tz: str) -> dict:
+def compute_chart(
+    date_str: str,
+    time_str: str,
+    lat: float,
+    lon: float,
+    tz: str,
+    ayanamsa: str = "lahiri",
+    topocentric: bool = False,
+) -> dict:
     """
     Compute a full Vedic birth chart.
 
@@ -106,6 +122,8 @@ def compute_chart(date_str: str, time_str: str, lat: float, lon: float, tz: str)
         lat: Geographic latitude
         lon: Geographic longitude
         tz: IANA timezone string (e.g. "Asia/Kolkata")
+        ayanamsa: Ayanamsa system key (lahiri, raman, kp, true_chitrapaksha)
+        topocentric: If True, calculate from observer's surface location
 
     Returns:
         dict matching the ChartResponse schema
@@ -124,9 +142,15 @@ def compute_chart(date_str: str, time_str: str, lat: float, lon: float, tz: str)
     # --- 2. Julian Day ---
     jd = swe.julday(utc_dt.year, utc_dt.month, utc_dt.day, ut_hour)
 
-    # --- 3. Configure sidereal mode (Lahiri) ---
-    swe.set_sid_mode(swe.SIDM_LAHIRI, 0, 0)
+    # --- 3. Configure sidereal mode (dynamic Ayanamsa) ---
+    sid_mode = AYANAMSA_MAP.get(ayanamsa.lower(), swe.SIDM_LAHIRI)
+    swe.set_sid_mode(sid_mode, 0, 0)
     calc_flags = swe.FLG_SWIEPH | swe.FLG_SIDEREAL
+
+    # --- 3b. Topocentric mode (surface-level precision) ---
+    if topocentric:
+        swe.set_topo(lon, lat, 0)  # elevation=0m is standard
+        calc_flags |= swe.FLG_TOPOCTR
 
     # --- 4. Ascendant & House Cusps ---
     # swe.houses_ex returns (cusps_tuple, ascmc_tuple)
@@ -178,9 +202,14 @@ def compute_chart(date_str: str, time_str: str, lat: float, lon: float, tz: str)
     planets.append(_build_planet_data(ketu_degree, -1, "ke", "Ketu", force_retrograde=True))
 
     # --- 8. Metadata ---
+    ayanamsa_labels = {
+        "lahiri": "Lahiri", "raman": "Raman",
+        "kp": "Krishnamurti (KP)", "true_chitrapaksha": "True Chitrapaksha",
+    }
     metadata = {
         "calculation_engine": "pyswisseph",
-        "ayanamsa": "Lahiri",
+        "ayanamsa": ayanamsa_labels.get(ayanamsa.lower(), ayanamsa),
+        "topocentric": topocentric,
         "julian_day": round(jd, 6),
         "user_location": {
             "lat": lat,

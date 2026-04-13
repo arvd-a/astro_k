@@ -67,7 +67,7 @@ def generate_chart(req: ChartRequest):
         tz = "UTC"
 
     try:
-        chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
+        chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz, req.ayanamsa, req.topocentric)
         return chart_data
     except Exception as e:
         import traceback
@@ -85,7 +85,7 @@ def generate_chart_pdf_endpoint(req: ChartRequest):
         tz = "UTC"
 
     try:
-        chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
+        chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz, req.ayanamsa, req.topocentric)
         pdf_bytes = generate_chart_pdf(chart_data)
 
         # fpdf2's output() returns bytearray; Starlette needs bytes
