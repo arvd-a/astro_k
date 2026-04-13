@@ -23,6 +23,7 @@ export default function ChartPage() {
   const handleGenerate = async (formData) => {
     setLoading(true);
     setErrorMSG("");
+    const startTime = Date.now();
     try {
       const data = await fetchChart(formData);
       setChartData(data);
@@ -32,7 +33,14 @@ export default function ChartPage() {
       setAspectData(aspects);
     } catch (err) {
       console.error(err);
-      setErrorMSG("Backend is not reachable or failed to compute the chart.");
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(0);
+      if (err.message?.includes('422')) {
+        setErrorMSG("Invalid input — please check your date, time, and location fields.");
+      } else if (elapsed > 15) {
+        setErrorMSG("The server was waking up from sleep. Please try again — it should be instant now.");
+      } else {
+        setErrorMSG("Backend is not reachable or failed to compute the chart.");
+      }
     } finally {
       setLoading(false);
     }
@@ -128,9 +136,14 @@ export default function ChartPage() {
                 />
               </div>
             ) : (
-              <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', minHeight: '400px' }}>
+            <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', minHeight: '400px', gap: '12px' }}>
                 {loading ? (
-                  <div className="animate-pulse" style={{ color: 'var(--neon-green)' }}>Aligning celestial bodies...</div>
+                  <>
+                    <div className="animate-pulse" style={{ color: 'var(--neon-green)', fontSize: '1rem' }}>Aligning celestial bodies...</div>
+                    <div style={{ fontSize: '0.75rem', color: 'rgba(148, 163, 184, 0.5)', marginTop: '8px' }}>
+                      First request may take 15-30s if the engine is waking up
+                    </div>
+                  </>
                 ) : (
                   <div>Enter birth details to generate the chart</div>
                 )}

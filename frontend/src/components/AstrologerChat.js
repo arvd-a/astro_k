@@ -40,7 +40,9 @@ export default function AstrologerChat({ chartData }) {
     setLoading(true);
 
     try {
-      const data = await fetchChat(chartData, updatedMessages);
+      // Cap conversation history to last 10 messages to control payload size
+      const recentMessages = updatedMessages.slice(-10);
+      const data = await fetchChat(chartData, recentMessages);
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
     } catch (err) {
       console.error(err);
