@@ -29,6 +29,7 @@ class UserLocation(BaseModel):
 class Metadata(BaseModel):
     calculation_engine: str = "pyswisseph"
     ayanamsa: str = "Lahiri"
+    topocentric: bool = False
     julian_day: float
     user_location: UserLocation
 

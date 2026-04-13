@@ -42,11 +42,14 @@ PLANETS = [
 ]
 
 # Supported Ayanamsa systems
+# True Chitrapaksha constant varies across pysweph versions
+_TRUE_CHITRA = getattr(swe, 'SIDM_TRUE_CITRA', getattr(swe, 'SIDM_TRUE_CHITRA', 27))
+
 AYANAMSA_MAP = {
-    "lahiri":          swe.SIDM_LAHIRI,
-    "raman":           swe.SIDM_RAMAN,
-    "kp":              swe.SIDM_KRISHNAMURTI,
-    "true_chitrapaksha": swe.SIDM_TRUE_CITRA,
+    "lahiri":            swe.SIDM_LAHIRI,
+    "raman":             swe.SIDM_RAMAN,
+    "kp":                swe.SIDM_KRISHNAMURTI,
+    "true_chitrapaksha": _TRUE_CHITRA,
 }
 
 
