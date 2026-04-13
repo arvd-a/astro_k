@@ -77,10 +77,8 @@ def generate_chart_pdf_endpoint(req: ChartRequest):
         chart_data = compute_chart(req.date, req.time, req.lat, req.lon, tz)
         pdf_bytes = generate_chart_pdf(chart_data)
 
-        # PyFPDF2 pdf.output() usually returns a bytearray or bytes.
-        import builtins
-        if not isinstance(pdf_bytes, (bytes, bytearray)):
-            pdf_bytes = bytes(pdf_bytes)
+        # fpdf2's output() returns bytearray; Starlette needs bytes
+        pdf_bytes = bytes(pdf_bytes)
 
         return Response(
             content=pdf_bytes,
